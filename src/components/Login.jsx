@@ -42,7 +42,7 @@ export default class Login extends Component {
               loading: false,
               redirect: true,
             });
-            window.location.assign("/profile")
+            window.location.assign("/profile");
           }, 2500);
         } else {
           this.setState({
@@ -62,9 +62,7 @@ export default class Login extends Component {
         // console.log(err);
         this.setState({
           notification: true,
-          message: err.response.data.message.msg
-            ? err.response.data.message.msg
-            : err.response.data.message,
+          message: err.response.data?.message,
         });
         setTimeout(() => {
           this.setState({
@@ -127,15 +125,15 @@ export default class Login extends Component {
               <button type="submit">Login</button>
             </form>
             Not Registered!{" "}
-                <Link
-                  to={{
-                    pathname: "/",
-                  }}
-                >
-                  {" "}
-                  Click here
-                </Link>{" "}
-                to Register!
+            <Link
+              to={{
+                pathname: "/",
+              }}
+            >
+              {" "}
+              Click here
+            </Link>{" "}
+            to Register!
           </div>
         </div>
       );

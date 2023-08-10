@@ -32,6 +32,7 @@ export default class Profile extends Component {
   };
 
   newFunc = (e) => {
+    console.log(e.target.files[0])
     fd.append("profile_pic", e.target.files[0]);
 
     axios
@@ -47,20 +48,23 @@ export default class Profile extends Component {
             message: resp.data.message,
           });
           setTimeout(() => {
-            this.setState({
-              notification: false,
-              message: "",
-            });
+            this.setState(
+              {
+                notification: false,
+                message: "",
+              },
+              () => {
+                this.getSingleUser();
+              }
+            );
           }, 2500);
         }
-        this.getSingleUser();
       })
       .catch((err) => {
+        console.log(err);
         this.setState({
           notification: true,
-          message: err.response.data.message.msg
-            ? err.response.data.message.msg
-            : err.response.data.message,
+          message:  err.response.data?.message,
         });
         setTimeout(() => {
           this.setState({
@@ -76,24 +80,24 @@ export default class Profile extends Component {
     return (
       <div>
         {this.state.notification ? (
-            <div
-              style={{
-                marginTop: "30px",
-                borderRadius: "10px",
-                height: "4rem",
-                width: "30vw",
-                color: "#fff",
-                textAlign: "center",
-                backgroundColor: "green",
-                display: "flex",
-                justifyContent: "center",
-                marginLeft: "20px",
-              }}
-            >
-              {/* Message */}
-              {this.state.message}
-            </div>
-          ) : null} 
+          <div
+            style={{
+              marginTop: "30px",
+              borderRadius: "10px",
+              height: "4rem",
+              width: "30vw",
+              color: "#fff",
+              textAlign: "center",
+              backgroundColor: "green",
+              display: "flex",
+              justifyContent: "center",
+              marginLeft: "20px",
+            }}
+          >
+            {/* Message */}
+            {this.state.message}
+          </div>
+        ) : null}
         <div>
           <div className="profile_container">
             <div className="image_container">
@@ -101,7 +105,6 @@ export default class Profile extends Component {
                 src={Constants.img_url + this.state.profileDetails.profile_pic}
                 alt=""
               />
-              <button onClick>Update Profile Image</button>
               <input
                 type="file"
                 name="profile_pic"
@@ -109,6 +112,7 @@ export default class Profile extends Component {
                   this.newFunc(e);
                 }}
               />
+              {/* <button onClick>Update Profile Image</button> */}
             </div>
             <div className="profile_details">
               <div>
